@@ -1,3 +1,4 @@
+using PatientForm.Api.Middlewares;
 using PatientForm.Application.Extensions;
 using PatientForm.Domain.Extensions;
 using PatientForm.Infrastructure.Extensions;
@@ -12,7 +13,11 @@ builder.Services.AddApplication();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<ErrorHandlingMiddleware>();
+
 var app = builder.Build();
+
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
