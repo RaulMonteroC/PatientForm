@@ -4,6 +4,19 @@ namespace PatientForm.Application.DTOs;
 
 public record PatientDto
 {
+    public PatientDto()
+    {
+    }
+
+    public PatientDto(Guid id, string name, string lastName, string? phoneNumber, string? email)
+    {
+        Id = id;
+        Name = name;
+        LastName = lastName;
+        PhoneNumber = phoneNumber;
+        Email = email;
+    }
+
     public Guid Id { get; set; }
     public string Name { get; set; } = default!;
     public string LastName { get; set; } = default!;

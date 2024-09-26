@@ -35,6 +35,34 @@ public class PatientDtoTests
            .Should()
            .Be(patient.Email);
     }
+    
+    [TestCaseSource(nameof(_patientDtoList))]
+    public void ToEntity_ShouldReturn_PatientWithSameValues(PatientDto dto)
+    {
+        // Act
+        var entity = dto.ToEntity();
+        
+        //Assert
+        entity.Id
+           .Should()
+           .Be(dto.Id);
+
+        entity.Name
+           .Should()
+           .Be(dto.Name);
+
+        entity.LastName
+           .Should()
+           .Be(dto.LastName);
+
+        entity.PhoneNumber
+           .Should()
+           .Be(dto.PhoneNumber);
+
+        entity.Email
+           .Should()
+           .Be(dto.Email);
+    }
 
     private static readonly IEnumerable<Patient> _patientList = new Patient[]
                                                                 {
@@ -44,4 +72,25 @@ public class PatientDtoTests
                                                                     new(Guid.NewGuid(), "Name4", "Lastname4", "PhoneNumber", "Email"),
                                                                     new(Guid.NewGuid(), "Name5", "Lastname5", "PhoneNumber", "Email")
                                                                 };
+
+    private static readonly IEnumerable<PatientDto> _patientDtoList = new PatientDto[]
+                                                                      {
+                                                                          new(id: Guid.NewGuid(),
+                                                                              name: "Name1",
+                                                                              lastName: "LastName1",
+                                                                              phoneNumber: "phone",
+                                                                              email: "email"),
+                                                                          
+                                                                          new(id: Guid.NewGuid(),
+                                                                              name: "Name2",
+                                                                              lastName: "LastName2",
+                                                                              phoneNumber: "phone",
+                                                                              email: "email"),
+                                                                          
+                                                                          new(id: Guid.NewGuid(),
+                                                                              name: "Name3",
+                                                                              lastName: "LastName3",
+                                                                              phoneNumber: "phone",
+                                                                              email: "email"),
+                                                                      };
 }
