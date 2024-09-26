@@ -2,13 +2,13 @@ using PatientForm.Domain.Entities;
 
 namespace PatientForm.Application.DTOs;
 
-public class PatientDto
+public record PatientDto
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = default!;
     public string LastName { get; set; } = default!;
-    public string PhoneNumber { get; set; } = default!;
-    public string Email { get; set; } = default!;
+    public string? PhoneNumber { get; set; }
+    public string? Email { get; set; }
 
     public static PatientDto FromEntity(Patient entity)
         => new()
