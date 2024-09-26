@@ -19,7 +19,17 @@ public class PatientController(IPatientService patientService) : ControllerBase
     public async Task<IActionResult> Post([FromBody] PatientDto patient)
     {
         await patientService.Save(patient);
-        
-        return Ok();
+
+        return Created();
+    }
+    
+    [HttpPut]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Put([FromBody] PatientDto patient)
+    {
+        await patientService.Update(patient);
+
+        return Accepted();
     }
 }

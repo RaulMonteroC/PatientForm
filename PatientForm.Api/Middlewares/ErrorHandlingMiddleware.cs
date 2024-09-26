@@ -1,3 +1,5 @@
+using PatientForm.Infrastructure.Exceptions;
+
 namespace PatientForm.Api.Middlewares;
 
 public class ErrorHandlingMiddleware : IMiddleware
@@ -7,6 +9,11 @@ public class ErrorHandlingMiddleware : IMiddleware
         try
         {
             await next.Invoke(context);
+        }
+        catch (NotFoundException e)
+        {
+            context.Response.StatusCode = 404;
+            await context.Response.WriteAsync("The resource you are looking for can't be found");            
         }
         catch (Exception e)
         {

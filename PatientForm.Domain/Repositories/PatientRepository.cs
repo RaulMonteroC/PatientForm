@@ -6,57 +6,60 @@ using PatientForm.Infrastructure.Configuration;
 
 namespace PatientForm.Domain.Repositories;
 
-internal class PatientRepository(IOptions<ConnectionSettings> settings) : IPatientRepository
+internal class PatientRepository(IOptions<ConnectionSettings> settings) : AbstractRepository(settings), IPatientRepository
 {
-    private readonly ConnectionSettings _settings = settings.Value;
-    public async Task<IEnumerable<Patient>> Get(int page, int pageSize)
-    {
-        var patients = new List<Patient>();
-        await using var connection = new SqlConnection(_settings.PatientDb);
-        await using var command = new SqlCommand("sp_fetch_patients", connection);
+    public Task<IEnumerable<Patient>> Get(int page, int pageSize) =>
+        ExecuteQuery("sp_fetch_patients",
+                     [
+                         new SqlParameter("@PageNumber", value: page),
+                         new SqlParameter("@RowsOfPage", value: pageSize)
+                     ],
+                     CommandType.StoredProcedure,
+                     reader => new Patient(new Guid(reader["Id"].ToString()!),
+                                           reader["Name"].ToString()!,
+                                           reader["LastName"].ToString()!,
+                                           reader["PhoneNumber"].ToString() ?? string.Empty,
+                                           reader["Email"].ToString() ?? string.Empty));
 
-        if (connection.State == ConnectionState.Closed)
-            await connection.OpenAsync();
+    public Task Save(Patient patient) =>
+        ExecuteActionQuery(@"INSERT INTO tblPatient (Name, LastName, PhoneNumber, Email, InsuranceId) 
+                                   VALUES(@name, @lastName, @phoneNumber, @email, @insuranceId)",
+                           [
+                               new SqlParameter("@name", value: patient.Name),
+                               new SqlParameter("@lastName", patient.LastName),
+                               new SqlParameter("@phoneNumber", patient.PhoneNumber),
+                               new SqlParameter("@email", patient.Email),
+                               new SqlParameter("@insuranceId", patient.Insurance != null ? patient.Insurance : DBNull.Value)
+                           ],
+                           CommandType.Text
+                          );
 
-        command.Parameters.AddWithValue("@PageNumber", page);
-        command.Parameters.AddWithValue("@RowsOfPage", pageSize);
-        command.CommandType = CommandType.StoredProcedure;
+    public Task Update(Patient patient) =>
+        ExecuteActionQuery(@"UPDATE tblPatient SET 
+                                    Name = @name,
+                                    LastName = @lastName,
+                                    PhoneNumber = @phoneNumber,
+                                    Email = @email,
+                                    InsuranceId = @insuranceId
+                                    WHERE Id = @id",
+                           [
+                               new SqlParameter("@id", value: patient.Id),
+                               new SqlParameter("@name", value: patient.Name),
+                               new SqlParameter("@lastName", patient.LastName),
+                               new SqlParameter("@phoneNumber", patient.PhoneNumber),
+                               new SqlParameter("@email", patient.Email),
+                               new SqlParameter("@insuranceId", patient.Insurance != null ? patient.Insurance : DBNull.Value)
+                           ],
+                           CommandType.Text
+                          );
 
-        await using var reader = await command.ExecuteReaderAsync();
-
-        while (await reader.ReadAsync())
-        {
-            patients.Add(new Patient(new Guid(reader["Id"].ToString()!),
-                                     reader["Name"].ToString()!,
-                                     reader["LastName"].ToString()!,
-                                     reader["PhoneNumber"].ToString() ?? string.Empty,
-                                     reader["Email"].ToString() ?? string.Empty));
-        }
-
-        return patients;
-    }
-
-    public async Task Save(Patient patient)
-    {
-        await using var connection = new SqlConnection(_settings.PatientDb);
-        await using var command = new SqlCommand(GetQuery(), connection);
-
-        if (connection.State == ConnectionState.Closed)
-            await connection.OpenAsync();
-        
-        command.Parameters.AddWithValue("@name", patient.Name);
-        command.Parameters.AddWithValue("@lastName", patient.LastName);
-        command.Parameters.AddWithValue("@phoneNumber", patient.PhoneNumber);
-        command.Parameters.AddWithValue("@email", patient.Email);
-        command.Parameters.AddWithValue("@insuranceId", patient.Insurance != null? patient.Insurance : DBNull.Value);
-        
-        command.CommandType = CommandType.Text;
-
-        await command.ExecuteNonQueryAsync();
-
-        await using var reader = await command.ExecuteReaderAsync();
-
-        string GetQuery() => @"INSERT INTO tblPatient (Name, LastName, PhoneNumber, Email, InsuranceId) 
-                               VALUES(@name, @lastName, @phoneNumber, @email, @insuranceId)"; 
-    }
+    public async Task<bool> Exists(string id) =>
+        (await ExecuteQuery("SELECT TOP 1 Id FROM tblPatient WHERE Id = @id",
+                            [
+                                new SqlParameter("@id", value: id)
+                            ],
+                            CommandType.Text,
+                            reader => reader["Id"].ToString()!
+                           ))
+       .Any();
 }
