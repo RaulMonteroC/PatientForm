@@ -11,4 +11,10 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\PatientForm.Application\PatientForm.Application.csproj" />
+      <ProjectReference Include="..\PatientForm.Domain\PatientForm.Domain.csproj" />
+      <ProjectReference Include="..\PatientForm.Infrastructure\PatientForm.Infrastructure.csproj" />
+    </ItemGroup>
+
 </Project>
