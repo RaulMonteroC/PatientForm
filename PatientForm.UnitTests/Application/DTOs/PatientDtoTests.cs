@@ -75,22 +75,29 @@ public class PatientDtoTests
 
     private static readonly IEnumerable<PatientDto> _patientDtoList = new PatientDto[]
                                                                       {
-                                                                          new(id: Guid.NewGuid(),
-                                                                              name: "Name1",
-                                                                              lastName: "LastName1",
-                                                                              phoneNumber: "phone",
-                                                                              email: "email"),
-                                                                          
-                                                                          new(id: Guid.NewGuid(),
-                                                                              name: "Name2",
-                                                                              lastName: "LastName2",
-                                                                              phoneNumber: "phone",
-                                                                              email: "email"),
-                                                                          
-                                                                          new(id: Guid.NewGuid(),
-                                                                              name: "Name3",
-                                                                              lastName: "LastName3",
-                                                                              phoneNumber: "phone",
-                                                                              email: "email"),
+                                                                          new()
+                                                                          {
+                                                                              Id = Guid.NewGuid(),
+                                                                              Name = "Name1",
+                                                                              LastName = "LastName1",
+                                                                              PhoneNumber = "phone",
+                                                                              Email = "email"
+                                                                          },
+                                                                          new()
+                                                                          {
+                                                                              Id = Guid.NewGuid(),
+                                                                              Name = "Name2",
+                                                                              LastName = "LastName2",
+                                                                              PhoneNumber = "phone",
+                                                                              Email = "email"
+                                                                          },
+                                                                          new()
+                                                                          {
+                                                                              Id = Guid.NewGuid(),
+                                                                              Name = "Name2",
+                                                                              LastName = "LastName3",
+                                                                              PhoneNumber = "phone",
+                                                                              Email = "email"
+                                                                          }
                                                                       };
 }
