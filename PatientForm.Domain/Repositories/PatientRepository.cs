@@ -16,13 +16,10 @@ internal class PatientRepository(IOptions<ConnectionSettings> settings) : IPatie
         await using var command = new SqlCommand("sp_fetch_patients", connection);
 
         if (connection.State == ConnectionState.Closed)
-            connection.Open();
+            await connection.OpenAsync();
 
-        command.Parameters.Add("@PageNumber", SqlDbType.Int);
-        command.Parameters.Add("@RowsOfPage", SqlDbType.Int);
-        command.Parameters["@PageNumber"].Value = page;
-        command.Parameters["@RowsOfPage"].Value = pageSize;
-        
+        command.Parameters.AddWithValue("@PageNumber", page);
+        command.Parameters.AddWithValue("@RowsOfPage", pageSize);
         command.CommandType = CommandType.StoredProcedure;
 
         await using var reader = await command.ExecuteReaderAsync();
@@ -37,5 +34,29 @@ internal class PatientRepository(IOptions<ConnectionSettings> settings) : IPatie
         }
 
         return patients;
+    }
+
+    public async Task Save(Patient patient)
+    {
+        await using var connection = new SqlConnection(_settings.PatientDb);
+        await using var command = new SqlCommand(GetQuery(), connection);
+
+        if (connection.State == ConnectionState.Closed)
+            await connection.OpenAsync();
+        
+        command.Parameters.AddWithValue("@name", patient.Name);
+        command.Parameters.AddWithValue("@lastName", patient.LastName);
+        command.Parameters.AddWithValue("@phoneNumber", patient.PhoneNumber);
+        command.Parameters.AddWithValue("@email", patient.Email);
+        command.Parameters.AddWithValue("@insuranceId", patient.Insurance != null? patient.Insurance : DBNull.Value);
+        
+        command.CommandType = CommandType.Text;
+
+        await command.ExecuteNonQueryAsync();
+
+        await using var reader = await command.ExecuteReaderAsync();
+
+        string GetQuery() => @"INSERT INTO tblPatient (Name, LastName, PhoneNumber, Email, InsuranceId) 
+                               VALUES(@name, @lastName, @phoneNumber, @email, @insuranceId)"; 
     }
 }

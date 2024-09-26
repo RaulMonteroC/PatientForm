@@ -11,4 +11,9 @@ public class PatientService(IPatientRepository patientRepository) : IPatientServ
 
         return patients.Select(PatientDto.FromEntity);
     }
+
+    public async Task Save(PatientDto patient)
+    {
+        await patientRepository.Save(patient.ToEntity());
+    }
 }

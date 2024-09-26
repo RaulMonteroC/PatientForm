@@ -9,6 +9,12 @@ public record PatientDto
     public string LastName { get; set; } = default!;
     public string? PhoneNumber { get; set; }
     public string? Email { get; set; }
+    
+    public Patient ToEntity() => new(Id,
+                                     Name,
+                                     LastName,
+                                     PhoneNumber,
+                                     Email);
 
     public static PatientDto FromEntity(Patient entity)
         => new()
