@@ -3,7 +3,7 @@ using PatientForm.Domain.Repositories;
 
 namespace PatientForm.Application.Patients;
 
-internal class PatientService(IPatientRepository patientRepository) : IPatientService
+public class PatientService(IPatientRepository patientRepository) : IPatientService
 {
     public async Task<IEnumerable<PatientDto>> GetAll(int page, int pageSize)
     {

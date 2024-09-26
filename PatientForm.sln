@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientForm.Application", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientForm.Infrastructure", "PatientForm.Infrastructure\PatientForm.Infrastructure.csproj", "{57EC06E0-FDCA-4018-B76B-C44749076BA7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientForm.UnitTests", "PatientForm.UnitTests\PatientForm.UnitTests.csproj", "{88E6B429-75C9-461C-873C-D0292BB7D78B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{57EC06E0-FDCA-4018-B76B-C44749076BA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57EC06E0-FDCA-4018-B76B-C44749076BA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57EC06E0-FDCA-4018-B76B-C44749076BA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88E6B429-75C9-461C-873C-D0292BB7D78B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88E6B429-75C9-461C-873C-D0292BB7D78B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88E6B429-75C9-461C-873C-D0292BB7D78B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88E6B429-75C9-461C-873C-D0292BB7D78B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
