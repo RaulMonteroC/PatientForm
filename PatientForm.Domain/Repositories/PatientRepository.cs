@@ -8,6 +8,26 @@ namespace PatientForm.Domain.Repositories;
 
 internal class PatientRepository(IOptions<ConnectionSettings> settings) : AbstractRepository(settings), IPatientRepository
 {
+    public async Task<Patient?> Get(string id) =>
+        (await ExecuteQuery(@"SELECT p.Id,
+	                            p.Name,
+	                            p.LastName,
+	                            i.Number AS InsuranceNumber,
+	                            p.PhoneNumber,
+	                            p.Email
+                            FROM tblPatient p
+                            LEFT JOIN tblInsurance i ON p.InsuranceId = i.Id
+                            WHERE p.Id = @id
+                            AND p.DeletedAt IS NULL",
+                     [new SqlParameter("@id", value: id)],
+                     CommandType.Text,
+                     reader => new Patient(reader["Id"].ToString()!,
+                                           reader["Name"].ToString()!,
+                                           reader["LastName"].ToString()!,
+                                           reader["PhoneNumber"].ToString() ?? string.Empty,
+                                           reader["Email"].ToString() ?? string.Empty)))
+       .FirstOrDefault();
+    
     public Task<IEnumerable<Patient>> Get(int page, int pageSize) =>
         ExecuteQuery("sp_fetch_patients",
                      [

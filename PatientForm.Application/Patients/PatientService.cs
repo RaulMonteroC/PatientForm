@@ -7,6 +7,16 @@ namespace PatientForm.Application.Patients;
 
 public class PatientService(IPatientRepository patientRepository) : IPatientService
 {
+    public async Task<PatientDto> Get(string id)
+    {
+        var patient = await patientRepository.Get(id);
+        
+        if(patient == null)
+            throw new NotFoundException(nameof(Patient), id);
+
+        return PatientDto.FromEntity(patient);
+    }
+    
     public async Task<IEnumerable<PatientDto>> GetAll(int page, int pageSize)
     {
         var patients = await patientRepository.Get(page, pageSize);
