@@ -8,5 +8,6 @@ public static class ServiceCollectionExtensions
     public static void AddDomain(this IServiceCollection services)
     {
         services.AddScoped<IPatientRepository, PatientRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
     }
 }
