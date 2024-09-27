@@ -1,6 +1,6 @@
 namespace PatientForm.Domain.Entities;
 
-public record Patient(Guid Id,
+public record Patient(string Id,
                       string Name,
                       string LastName,
                       string? PhoneNumber,

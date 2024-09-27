@@ -66,18 +66,18 @@ public class PatientDtoTests
 
     private static readonly IEnumerable<Patient> _patientList = new Patient[]
                                                                 {
-                                                                    new(Guid.NewGuid(), "Name1", "Lastname1", "PhoneNumber", "Email"),
-                                                                    new(Guid.NewGuid(), "Name2", "Lastname2", "PhoneNumber", "Email"),
-                                                                    new(Guid.NewGuid(), "Name3", "Lastname3", "PhoneNumber", "Email"),
-                                                                    new(Guid.NewGuid(), "Name4", "Lastname4", "PhoneNumber", "Email"),
-                                                                    new(Guid.NewGuid(), "Name5", "Lastname5", "PhoneNumber", "Email")
+                                                                    new(Guid.NewGuid().ToString(), "Name1", "Lastname1", "PhoneNumber", "Email"),
+                                                                    new(Guid.NewGuid().ToString(), "Name2", "Lastname2", "PhoneNumber", "Email"),
+                                                                    new(Guid.NewGuid().ToString(), "Name3", "Lastname3", "PhoneNumber", "Email"),
+                                                                    new(Guid.NewGuid().ToString(), "Name4", "Lastname4", "PhoneNumber", "Email"),
+                                                                    new(Guid.NewGuid().ToString(), "Name5", "Lastname5", "PhoneNumber", "Email")
                                                                 };
 
     private static readonly IEnumerable<PatientDto> _patientDtoList = new PatientDto[]
                                                                       {
                                                                           new()
                                                                           {
-                                                                              Id = Guid.NewGuid(),
+                                                                              Id = Guid.NewGuid().ToString(),
                                                                               Name = "Name1",
                                                                               LastName = "LastName1",
                                                                               PhoneNumber = "phone",
@@ -85,7 +85,7 @@ public class PatientDtoTests
                                                                           },
                                                                           new()
                                                                           {
-                                                                              Id = Guid.NewGuid(),
+                                                                              Id = Guid.NewGuid().ToString(),
                                                                               Name = "Name2",
                                                                               LastName = "LastName2",
                                                                               PhoneNumber = "phone",
@@ -93,7 +93,7 @@ public class PatientDtoTests
                                                                           },
                                                                           new()
                                                                           {
-                                                                              Id = Guid.NewGuid(),
+                                                                              Id = Guid.NewGuid().ToString(),
                                                                               Name = "Name2",
                                                                               LastName = "LastName3",
                                                                               PhoneNumber = "phone",

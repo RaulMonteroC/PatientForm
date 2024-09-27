@@ -15,7 +15,7 @@ internal class PatientRepository(IOptions<ConnectionSettings> settings) : Abstra
                          new SqlParameter("@RowsOfPage", value: pageSize)
                      ],
                      CommandType.StoredProcedure,
-                     reader => new Patient(new Guid(reader["Id"].ToString()!),
+                     reader => new Patient(reader["Id"].ToString()!,
                                            reader["Name"].ToString()!,
                                            reader["LastName"].ToString()!,
                                            reader["PhoneNumber"].ToString() ?? string.Empty,
@@ -23,7 +23,7 @@ internal class PatientRepository(IOptions<ConnectionSettings> settings) : Abstra
 
     public Task Save(Patient patient) =>
         ExecuteActionQuery(@"INSERT INTO tblPatient (Name, LastName, PhoneNumber, Email, InsuranceId) 
-                                   VALUES(@name, @lastName, @phoneNumber, @email, @insuranceId)",
+                            VALUES(@name, @lastName, @phoneNumber, @email, @insuranceId)",
                            [
                                new SqlParameter("@name", value: patient.Name),
                                new SqlParameter("@lastName", patient.LastName),
@@ -55,11 +55,15 @@ internal class PatientRepository(IOptions<ConnectionSettings> settings) : Abstra
 
     public async Task<bool> Exists(string id) =>
         (await ExecuteQuery("SELECT TOP 1 Id FROM tblPatient WHERE Id = @id",
-                            [
-                                new SqlParameter("@id", value: id)
-                            ],
+                            [new SqlParameter("@id", value: id)],
                             CommandType.Text,
                             reader => reader["Id"].ToString()!
                            ))
        .Any();
+    
+    public Task Delete(string id) =>
+        ExecuteActionQuery("UPDATE tblPatient SET DeletedAt = GETDATE() WHERE Id = @id",
+                           [new SqlParameter("@id", value: id)],
+                           CommandType.Text
+                          );
 }

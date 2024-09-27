@@ -22,13 +22,23 @@ public class PatientController(IPatientService patientService) : ControllerBase
 
         return Created();
     }
-    
+
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Put([FromBody] PatientDto patient)
     {
         await patientService.Update(patient);
+
+        return Accepted();
+    }
+
+    [HttpPatch("{id}")]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete([FromRoute] string id)
+    {
+        await patientService.Delete(id);
 
         return Accepted();
     }
