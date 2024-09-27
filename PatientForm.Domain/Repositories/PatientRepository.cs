@@ -1,12 +1,16 @@
 using System.Data;
 using System.Data.SqlClient;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PatientForm.Domain.Entities;
 using PatientForm.Infrastructure.Configuration;
 
 namespace PatientForm.Domain.Repositories;
 
-internal class PatientRepository(IOptions<ConnectionSettings> settings) : AbstractRepository(settings), IPatientRepository
+internal class PatientRepository(IOptions<ConnectionSettings> settings,
+                                 ILogger<PatientRepository> logger) 
+    : AbstractRepository(settings,logger), 
+      IPatientRepository
 {
     public async Task<Patient?> Get(string id) =>
         (await ExecuteQuery(@"SELECT p.Id,

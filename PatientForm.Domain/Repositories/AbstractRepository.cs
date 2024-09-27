@@ -1,12 +1,15 @@
 using System.Data;
 using System.Data.SqlClient;
+using System.Text;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PatientForm.Domain.Entities;
 using PatientForm.Infrastructure.Configuration;
 
 namespace PatientForm.Domain.Repositories;
 
-internal class AbstractRepository(IOptions<ConnectionSettings> settings)
+internal class AbstractRepository(IOptions<ConnectionSettings> settings,
+                                  ILogger logger)
 {
     protected readonly ConnectionSettings Settings = settings.Value;
 
@@ -25,6 +28,8 @@ internal class AbstractRepository(IOptions<ConnectionSettings> settings)
         command.CommandType = type;
 
         await command.ExecuteNonQueryAsync();
+        
+        LogCommandQuery(command);
 
         await using var reader = await command.ExecuteReaderAsync();
     }
@@ -50,7 +55,21 @@ internal class AbstractRepository(IOptions<ConnectionSettings> settings)
         {
             returnedValues.Add(parseFunction(reader));
         }
+        
+        LogCommandQuery(command);
 
         return returnedValues;
+    }
+
+    private void LogCommandQuery(SqlCommand command )
+    {
+        var query = new StringBuilder(command.CommandText);
+
+        foreach (SqlParameter p in command.Parameters)
+        {
+            query.Replace(p.ParameterName, p.Value?.ToString());
+        }
+        
+        logger.LogInformation($"QUERY: {query}");
     }
 }
