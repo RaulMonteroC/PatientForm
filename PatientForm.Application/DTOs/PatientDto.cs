@@ -4,7 +4,7 @@ namespace PatientForm.Application.DTOs;
 
 public record PatientDto
 {
-    public Guid Id { get; set; }
+    public string Id { get; set; } = default!;
     public string Name { get; set; } = default!;
     public string LastName { get; set; } = default!;
     public string? PhoneNumber { get; set; }

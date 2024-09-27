@@ -21,11 +21,21 @@ public class PatientService(IPatientRepository patientRepository) : IPatientServ
     
     public async Task Update(PatientDto patient)
     {
-        if (patient.Id == Guid.Empty || !await patientRepository.Exists(patient.Id.ToString()))
+        if (string.IsNullOrEmpty(patient.Id) || !await patientRepository.Exists(patient.Id))
         {
-            throw new NotFoundException(nameof(Patient), patient.Id.ToString());
+            throw new NotFoundException(nameof(Patient), patient.Id);
         }
             
         await patientRepository.Update(patient.ToEntity());
+    }
+    
+    public async Task Delete(string id)
+    {
+        if (string.IsNullOrEmpty(id) || !await patientRepository.Exists(id))
+        {
+            throw new NotFoundException(nameof(Patient), id);
+        }
+
+        await patientRepository.Delete(id);
     }
 }

@@ -37,7 +37,7 @@ public class PatientServiceTests
     {
         //arrange
         var patientRepository = A.Fake<IPatientRepository>(builder => builder.Strict());
-        var patient = new Patient(Guid.NewGuid(),
+        var patient = new Patient(Guid.NewGuid().ToString(),
                                   "Name1",
                                   "Lastname1",
                                   "PhoneNumber",
@@ -61,10 +61,10 @@ public class PatientServiceTests
 
     private readonly IEnumerable<Patient> _patientList = new Patient[]
                                                         {
-                                                            new(Guid.NewGuid(), "Name1", "Lastname1", "PhoneNumber", "Email"),
-                                                            new(Guid.NewGuid(), "Name2", "Lastname2", "PhoneNumber", "Email"),
-                                                            new(Guid.NewGuid(), "Name3", "Lastname3", "PhoneNumber", "Email"),
-                                                            new(Guid.NewGuid(), "Name4", "Lastname4", "PhoneNumber", "Email"),
-                                                            new(Guid.NewGuid(), "Name5", "Lastname5", "PhoneNumber", "Email")
+                                                            new(Guid.NewGuid().ToString(), "Name1", "Lastname1", "PhoneNumber", "Email"),
+                                                            new(Guid.NewGuid().ToString(), "Name2", "Lastname2", "PhoneNumber", "Email"),
+                                                            new(Guid.NewGuid().ToString(), "Name3", "Lastname3", "PhoneNumber", "Email"),
+                                                            new(Guid.NewGuid().ToString(), "Name4", "Lastname4", "PhoneNumber", "Email"),
+                                                            new(Guid.NewGuid().ToString(), "Name5", "Lastname5", "PhoneNumber", "Email")
                                                         };
 }
