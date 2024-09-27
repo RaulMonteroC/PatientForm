@@ -13,6 +13,12 @@ public class PatientController(IPatientService patientService) : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PatientDto>))]
     public async Task<IActionResult> GetAll([FromQuery] PaginatedQuery query) =>
         Ok(await patientService.GetAll(query.PageNumber, query.PageSize));
+    
+    [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PatientDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAll([FromRoute] string id) =>
+        Ok(await patientService.Get(id));
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
