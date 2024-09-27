@@ -8,6 +8,8 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.5"/>
+        <PackageReference Include="Serilog" Version="4.0.1" />
+        <PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
     </ItemGroup>
 
@@ -15,6 +17,10 @@
       <ProjectReference Include="..\PatientForm.Application\PatientForm.Application.csproj" />
       <ProjectReference Include="..\PatientForm.Domain\PatientForm.Domain.csproj" />
       <ProjectReference Include="..\PatientForm.Infrastructure\PatientForm.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Logs\" />
     </ItemGroup>
 
 </Project>
