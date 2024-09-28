@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using PatientForm.Api.Authorization;
 using PatientForm.Api.Extensions;
 using PatientForm.Api.Middlewares;
 using PatientForm.Application.Extensions;
@@ -19,6 +22,7 @@ try
     builder.Services.AddSwaggerGen();
 
     builder.Services.AddScoped<ErrorHandlingMiddleware>();
+    builder.ConfigureAuthorization();
 
     var app = builder.Build();
 
@@ -34,6 +38,8 @@ try
     app.MapControllers();
 
     app.UseHttpsRedirection();
+
+    app.UseAuthorization();
 
     app.Run();
 }

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PatientForm.Api.Filters;
 using PatientForm.Api.Query;
@@ -9,6 +10,7 @@ namespace PatientForm.Api.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [LogActionFilter]
+[Authorize]
 public class PatientController(IPatientService patientService) : ControllerBase
 {
     [HttpGet]
