@@ -12,7 +12,7 @@ namespace PatientForm.Api.Controllers;
 public class UserController(IUserService userService,
                             ITokenProvider tokenProvider) : ControllerBase
 {
-    [HttpPost]
+    [HttpPost("login")]
     [ProducesResponseType(StatusCodes.Status202Accepted, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Login([FromBody] UserCredentials user)

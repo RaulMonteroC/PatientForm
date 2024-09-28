@@ -5,6 +5,7 @@ using PatientForm.Api.Extensions;
 using PatientForm.Api.Middlewares;
 using PatientForm.Application.Extensions;
 using PatientForm.Domain.Extensions;
+using PatientForm.Domain.Initializers;
 using PatientForm.Infrastructure.Extensions;
 using Serilog;
 
@@ -25,6 +26,10 @@ try
     builder.ConfigureAuthorization();
 
     var app = builder.Build();
+    
+    var scope = app.Services.CreateScope();
+    var initializer = scope.ServiceProvider.GetRequiredService<IDatabaseInitializer>();
+    await initializer.Initialize();
 
     app.UseMiddleware<ErrorHandlingMiddleware>();
 

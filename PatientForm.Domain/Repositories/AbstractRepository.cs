@@ -18,13 +18,18 @@ public class AbstractRepository(IOptions<ConnectionSettings> settings,
     {
         await using var connection = new SqlConnection(_settings.PatientDb);
         await using var command = new SqlCommand(query, connection);
+        var returnParameter = new SqlParameter("@ret", -1);
 
         if (connection.State == ConnectionState.Closed)
             await connection.OpenAsync();
 
         command.Parameters.AddRange(parameters);
-        var returnParameter = command.Parameters
-                                     .Add(new SqlParameter("@ret", SqlDbType.Int) {Direction = ParameterDirection.ReturnValue});
+        
+        if (type == CommandType.StoredProcedure)
+        {
+            returnParameter = command.Parameters
+                                     .Add(new SqlParameter("@ret", SqlDbType.Int) {Direction = ParameterDirection.ReturnValue});   
+        }
 
         command.CommandType = type;
         
