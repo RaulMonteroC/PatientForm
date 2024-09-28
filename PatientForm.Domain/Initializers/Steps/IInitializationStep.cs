@@ -1,4 +1,4 @@
-namespace PatientForm.Domain.Initializers;
+namespace PatientForm.Domain.Initializers.Steps;
 
 public interface IInitializationStep
 {

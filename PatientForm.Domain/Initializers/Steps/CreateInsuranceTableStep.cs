@@ -1,9 +1,9 @@
 using Microsoft.Extensions.Logging;
 using PatientForm.Domain.Repositories;
 
-namespace PatientForm.Domain.Initializers;
+namespace PatientForm.Domain.Initializers.Steps;
 
-public class CreateInsuranceTableStep(IDatabaseInitializerRepository repository,
+internal class CreateInsuranceTableStep(IDatabaseInitializerRepository repository,
                                       ILogger<CreateInsuranceTableStep> logger) : IInitializationStep
 {
     public async Task Execute()
@@ -15,12 +15,13 @@ public class CreateInsuranceTableStep(IDatabaseInitializerRepository repository,
 			            WHERE TABLE_SCHEMA = 'dbo' 
 			            AND  TABLE_NAME = 'tblInsurance'))
 			            
-	            CREATE TABLE dbo.tblInsurance (
-		            Id char(36) NOT NULL DEFAULT (newid()),
-		            Number varchar(30) NOT NULL,
-		            Company varchar(50) NOT NULL,
-		            ExpirationDate date NOT NULL,
-		            PhotoUrl varchar(300) NULL
+	            CREATE TABLE dbo.tblInsurance 
+                (
+		            Id CHAR(36) NOT NULL DEFAULT (newid()),
+		            Number VARCHAR(30) NOT NULL,
+		            Company VARCHAR(50) NOT NULL,
+		            ExpirationDate DATE NOT NULL,
+		            PhotoUrl VARCHAR(300) NULL
 		            CONSTRAINT pk_tblInsurance PRIMARY KEY (Id)
 	            );");
     }
