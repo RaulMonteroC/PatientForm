@@ -23,12 +23,16 @@ public class AbstractRepository(IOptions<ConnectionSettings> settings,
             await connection.OpenAsync();
 
         command.Parameters.AddRange(parameters);
+        var returnParameter = command.Parameters
+                                     .Add(new SqlParameter("@ret", SqlDbType.Int) {Direction = ParameterDirection.ReturnValue});
 
         command.CommandType = type;
-
-        LogCommandQuery(command);
         
-        return await command.ExecuteNonQueryAsync();
+        await command.ExecuteNonQueryAsync();
+        
+        LogCommandQuery(command);
+
+        return (int) returnParameter.Value;
     }
     
     protected async Task<IEnumerable<T>> ExecuteQuery<T>(string query, 

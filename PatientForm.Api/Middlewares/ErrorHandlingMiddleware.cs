@@ -12,7 +12,7 @@ public class ErrorHandlingMiddleware(ILogger<ErrorHandlingMiddleware> logger) : 
         }
         catch (NotFoundException e)
         {
-            logger.LogError(e, e.Message);
+            logger.LogWarning(e.Message);
             
             context.Response.StatusCode = 404;
             await context.Response.WriteAsync("The resource you are looking for can't be found");            
