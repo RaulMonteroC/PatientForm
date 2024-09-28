@@ -1,7 +1,7 @@
 using FluentValidation;
 using PatientForm.Application.DTOs;
 
-namespace PatientForm.Application.Validators;
+namespace PatientForm.Api.Validators;
 
 public class PatientValidator
 {
